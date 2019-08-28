@@ -1,0 +1,135 @@
+- id: '1566849619293'
+  alias: EzanWithSensorDhuhr
+  trigger:
+  - event_data: {}
+    event_type: time_changed
+    platform: event
+  condition:
+  - condition: template
+    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.islamic_prayer_time_dhuhr")
+      + ".000000-05:00") %}true{% endif %}'
+  - below: '1'
+    condition: numeric_state
+    entity_id: counter.ezan_counter
+  action:
+  - data:
+      entity_id: media_player.living_room_display
+      media_content_id: https://archive.org/download/ezanlar/aksam_ismail_cosar_64kb.mp3
+      media_content_type: music
+    service: media_player.play_media
+  - data:
+      entity_id: counter.ezan_counter
+    service: counter.increment
+- id: ezan2
+  alias: EzanWithSensorAsr
+  trigger:
+  - event_data: {}
+    event_type: time_changed
+    platform: event
+  condition:
+  - condition: template
+    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.islamic_prayer_time_asr")
+      + ".000000-05:00") %}true{% endif %}'
+  - below: '2'
+    condition: numeric_state
+    entity_id: counter.ezan_counter
+  action:
+  - data:
+      entity_id: media_player.living_room_display
+      media_content_id: https://archive.org/download/ezanlar/aksam_ismail_cosar_64kb.mp3
+      media_content_type: music
+    service: media_player.play_media
+  - data:
+      entity_id: counter.ezan_counter
+    service: counter.increment
+- id: ezan3
+  alias: EzanWithSensorMaghrib
+  trigger:
+  - event_data: {}
+    event_type: time_changed
+    platform: event
+  condition:
+  - condition: template
+    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.islamic_prayer_time_maghrib")
+      + ".000000-05:00") %}true{% endif %}'
+  - below: '3'
+    condition: numeric_state
+    entity_id: counter.ezan_counter
+  action:
+  - data:
+      entity_id: media_player.living_room_display
+      media_content_id: https://archive.org/download/ezanlar/aksam_ismail_cosar_64kb.mp3
+      media_content_type: music
+    service: media_player.play_media
+  - data:
+      entity_id: counter.ezan_counter
+    service: counter.increment
+- id: ezan4
+  alias: EzanWithSensorIsha
+  trigger:
+  - event_data: {}
+    event_type: time_changed
+    platform: event
+  condition:
+  - condition: template
+    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.islamic_prayer_time_isha")
+      + ".000000-05:00") %}true{% endif %}'
+  - below: '4'
+    condition: numeric_state
+    entity_id: counter.ezan_counter
+  action:
+  - data:
+      entity_id: media_player.living_room_display
+      media_content_id: https://archive.org/download/ezanlar/aksam_ismail_cosar_64kb.mp3
+      media_content_type: music
+    service: media_player.play_media
+  - data:
+      entity_id: counter.ezan_counter
+    service: counter.increment
+- id: ezanReset
+  alias: EzanWithSensorDailyReset
+  trigger:
+  - at: 00:00:00
+    platform: time
+  action:
+  - data:
+      entity_id: counter.ezan_counter
+    service: counter.reset
+- id: '1566954407054'
+  alias: Emir
+  trigger:
+  - event_data: {}
+    event_type: emir
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: media_player.living_room_display
+      language: tr
+      message: Emir benim aslan oğlum
+    service: tts.google_translate_say
+- id: '1566954463429'
+  alias: Nigar
+  trigger:
+  - event_data: {}
+    event_type: nigar
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: media_player.living_room_display
+      language: tr
+      message: Nigar seni çok seviyorum
+    service: tts.google_translate_say
+- id: '1566954513239'
+  alias: Sunset Message
+  trigger:
+  - event: sunset
+    platform: sun
+  condition: []
+  action:
+  - data:
+      entity_id: media_player.living_room_display
+      language: tr
+      message: Güneş batıyor, masayı hazırlayalım
+    service: tts.google_translate_say
