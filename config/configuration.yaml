@@ -13,6 +13,9 @@ tts:
 sensor:
   - platform: yr
   - platform: islamic_prayer_times
+  - platform: crimereports
+    name: crime
+    radius: 1000
 
 counter:
   ezan_counter:

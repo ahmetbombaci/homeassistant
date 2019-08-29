@@ -125,6 +125,7 @@
   alias: Sunset Message
   trigger:
   - event: sunset
+    offset: '3'
     platform: sun
   condition: []
   action:
@@ -133,3 +134,15 @@
       language: tr
       message: Güneş batıyor, masayı hazırlayalım
     service: tts.google_translate_say
+- id: 'crimeAutomation'
+  alias: Crime Report
+  trigger:
+  - event_data: {}
+    event_type: crimealerts_incident
+    platform: event
+  condition: []
+  action:
+  - data_template:
+      message: just happened {{ trigger.event }}
+      name: crime-report
+    service: logbook.log
