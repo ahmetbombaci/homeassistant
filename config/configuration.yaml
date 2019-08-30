@@ -22,6 +22,10 @@ counter:
     initial: 0
     step: 1
 
+notify:
+  - name: facebook
+    platform: facebook
+    page_access_token: !secret facebook_page_access_code
 
 group: !include groups.yaml
 automation: !include automations.yaml
