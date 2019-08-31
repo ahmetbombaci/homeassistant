@@ -2,16 +2,30 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
-# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-# http:
-#   base_url: example.duckdns.org:8123
+http:
+  ssl_certificate: !secret http_ssl_certificate
+  ssl_key: !secret http_ssl_key 
+  base_url: !secret http_base_url
+
+homeassistant:
+  auth_providers:
+    - type: homeassistant
+    - type: trusted_networks
+      trusted_networks:
+        - 192.168.0.0/24
+        - fd00::/8
+
+# Update duckdns record in case public IP changes
+duckdns:
+  domain: !secret duckdns_domain
+  access_token: !secret duckdns_access_token
+
 
 # Text to speech
 tts:
   - platform: google_translate
 
 sensor:
-  - platform: yr
   - platform: islamic_prayer_times
   - platform: crimereports
     name: crime
@@ -26,6 +40,16 @@ notify:
   - name: facebook
     platform: facebook
     page_access_token: !secret facebook_page_access_code
+
+# Required for ios app
+ios:
+
+device_tracker:
+  - platform: traccar
+    host: !secret traccar_host
+    username: !secret traccar_username
+    password: !secret traccar_password
+
 
 group: !include groups.yaml
 automation: !include automations.yaml
