@@ -2,55 +2,45 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
+# https://www.home-assistant.io/integrations/http
 http:
-  ssl_certificate: !secret http_ssl_certificate
-  ssl_key: !secret http_ssl_key 
-  base_url: !secret http_base_url
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+  # https://peyanski.com/home-assistant-remote-access/
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
 
 homeassistant:
+  # https://www.home-assistant.io/docs/authentication/providers/
   auth_providers:
     - type: homeassistant
     - type: trusted_networks
       trusted_networks:
         - 192.168.0.0/24
         - fd00::/8
-
-# Update duckdns record in case public IP changes
-duckdns:
-  domain: !secret duckdns_domain
-  access_token: !secret duckdns_access_token
-
+  external_url: !secret ha_external_url
+  # If tts isn't working in your media players (and on a Google device at most you get a bloop), 
+  #   then the problem is most likely down to SSL. If you're using SSL in HA make sure that your 
+  #   external_url is correctly set, and that internal_url matches it. Alternatively set base_url 
+  #   in the tts integration to your external SSL URL.
+  internal_url: !secret ha_external_url
 
 # Text to speech
 tts:
   - platform: google_translate
 
-sensor:
-  - platform: islamic_prayer_times
-  - platform: crimereports
-    name: crime
-    radius: 1000
-
+# https://www.home-assistant.io/integrations/counter/
 counter:
   ezan_counter:
     initial: 0
     step: 1
 
-notify:
-  - name: facebook
-    platform: facebook
-    page_access_token: !secret facebook_page_access_code
 
 # Required for ios app
 ios:
 
-device_tracker:
-  - platform: traccar
-    host: !secret traccar_host
-    username: !secret traccar_username
-    password: !secret traccar_password
-
-
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
+scene: !include scenes.yaml
+

@@ -6,8 +6,7 @@
     platform: event
   condition:
   - condition: template
-    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.islamic_prayer_time_dhuhr")
-      + ".000000-05:00") %}true{% endif %}'
+    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.dhuhr_prayer")) %}true{% endif %}'
   - below: '1'
     condition: numeric_state
     entity_id: counter.ezan_counter
@@ -28,8 +27,7 @@
     platform: event
   condition:
   - condition: template
-    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.islamic_prayer_time_asr")
-      + ".000000-05:00") %}true{% endif %}'
+    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.asr_prayer")) %}true{% endif %}'
   - below: '2'
     condition: numeric_state
     entity_id: counter.ezan_counter
@@ -50,8 +48,7 @@
     platform: event
   condition:
   - condition: template
-    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.islamic_prayer_time_maghrib")
-      + ".000000-05:00") %}true{% endif %}'
+    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.maghrib_prayer")) %}true{% endif %}'
   - below: '3'
     condition: numeric_state
     entity_id: counter.ezan_counter
@@ -72,8 +69,7 @@
     platform: event
   condition:
   - condition: template
-    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.islamic_prayer_time_isha")
-      + ".000000-05:00") %}true{% endif %}'
+    value_template: '{% if as_timestamp(now()) > as_timestamp(states("sensor.isha_prayer")) %}true{% endif %}'
   - below: '4'
     condition: numeric_state
     entity_id: counter.ezan_counter
@@ -134,15 +130,3 @@
       language: tr
       message: Güneş batıyor, masayı hazırlayalım
     service: tts.google_translate_say
-- id: 'crimeAutomation'
-  alias: Crime Report
-  trigger:
-  - event_data: {}
-    event_type: crimealerts_incident
-    platform: event
-  condition: []
-  action:
-  - data_template:
-      message: just happened {{ trigger.event }}
-      name: crime-report
-    service: logbook.log
